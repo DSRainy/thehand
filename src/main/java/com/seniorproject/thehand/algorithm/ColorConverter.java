@@ -19,9 +19,9 @@ public class ColorConverter {
         height = bufferedImage.getHeight();
         rgbPixels = new int[width][height];
 
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                rgbPixels[x][y] = bufferedImage.getRGB(x, y);
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                rgbPixels[width - x - 1][y] = bufferedImage.getRGB(x, y);
             }
         }
     }
@@ -36,7 +36,7 @@ public class ColorConverter {
 
         for (int y = 0; y < height; y++) { // rotate clockwise
             for (int x = 0; x < width; x++) {
-                pixels[i] = rgbPixels[width - x - 1][y]; // flip horizontal
+                pixels[i] = rgbPixels[x][y];
                 i++;
             }
         }
