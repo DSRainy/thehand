@@ -32,7 +32,6 @@ public class ColorConverter {
     }
 
     public BufferedImage getImage() {
-//        getRGBPixels1Dim();
         int[] pixels = Array.change2DimTo1Dim(this.rgbPixels, height, width);
         BufferedImage bimage = new BufferedImage(320, 240, BufferedImage.TYPE_INT_RGB);
         Graphics2D bGr;
@@ -42,20 +41,7 @@ public class ColorConverter {
         return bimage;
     }
 
-//    private void getRGBPixels1Dim() {
-//        int i = 0;
-//        rgbPixels = new int[width * height];
-//
-//        for (int y = 0; y < height; y++) { // rotate clockwise
-//            for (int x = 0; x < width; x++) {
-//                rgbPixels[i] = rgbPixels[x][y];
-//                i++;
-//            }
-//        }
-//    }
-
     private void RGBtoHSV() {
-//        getRGBPixels1Dim();
         float[] hsv = new float[3];
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -88,8 +74,4 @@ public class ColorConverter {
         }
     }
 
-//    public BufferedImage getHSVImage() {
-//
-//        return image;
-//    }
 }
