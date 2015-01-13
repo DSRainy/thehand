@@ -15,6 +15,7 @@ public class ColorConverter {
 
     protected int[][] rgbPixels, hsvPixels;
     protected int width, height;
+    protected int lowThreshold, highThreshold;
 
     public void setBufferedImage(BufferedImage bufferedImage) {
         width = bufferedImage.getWidth();
@@ -75,18 +76,23 @@ public class ColorConverter {
                 int b = rgbPixels[x][y] & 0xFF;
                 hsv = Color.RGBtoHSB(r, g, b, hsv);
 //                hsvPixels[x][y] = Color.getHSBColor(hsv[0], 1f, 1f).getRGB();
-                hsvPixels[x][y] = threshold(hsv[0], 150, 240);
+                hsvPixels[x][y] = threshold(hsv[0]);
             }
         }
     }
 
-    private int threshold(float hue, float lowHue, float highHue) {
+    private int threshold(float hue) {
         hue *= 360.0f;
-        if (lowHue <= hue && hue <= highHue) {
+        if (lowThreshold <= hue && hue <= highThreshold) {
             return 0x00000000;
         } else {
             return 0xffffffff;
         }
+    }
+
+    public void setThreshold(int low, int high) {
+        this.lowThreshold = low;
+        this.highThreshold = high;
     }
 
 }
