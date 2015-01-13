@@ -31,8 +31,12 @@ public class EdgeRenderer extends JLabel {
         this.image = converter.getImage();
     }
 
-    public void setThreshold(int low, int high) {
-        converter.setThreshold(low, high);
+    public void setLowThreshold(int low) {
+        converter.setLowThreshold(low);
+    }
+    
+    public void setHighThreshold(int high){
+        converter.setHighThreshold(high);
     }
 
 }

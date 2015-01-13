@@ -90,8 +90,10 @@ public class ColorConverter {
         }
     }
 
-    public void setThreshold(int low, int high) {
+    public void setLowThreshold(int low) {
         this.lowThreshold = low;
+    }
+    public void setHighThreshold(int high){
         this.highThreshold = high;
     }
 
