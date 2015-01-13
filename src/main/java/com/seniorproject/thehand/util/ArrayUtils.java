@@ -9,7 +9,7 @@ package com.seniorproject.thehand.util;
  *
  * @author RainWhileLoop
  */
-public class Array {
+public class ArrayUtils {
 
     public static int[] change2DimTo1Dim(int[][] matrix, int row, int col) {
         int i = 0;
