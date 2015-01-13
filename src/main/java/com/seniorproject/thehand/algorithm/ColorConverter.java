@@ -74,8 +74,18 @@ public class ColorConverter {
                 int g = rgbPixels[x][y] >> 8 & 0xFF;
                 int b = rgbPixels[x][y] & 0xFF;
                 hsv = Color.RGBtoHSB(r, g, b, hsv);
-                hsvPixels[x][y] = Color.getHSBColor(hsv[0], 1.0f, 1f).getRGB();
+//                hsvPixels[x][y] = Color.getHSBColor(hsv[0], 1f, 1f).getRGB();
+                hsvPixels[x][y] = threshold(hsv[0], 150, 240);
             }
+        }
+    }
+
+    private int threshold(float hue, float lowHue, float highHue) {
+        hue *= 360.0f;
+        if (lowHue <= hue && hue <= highHue) {
+            return 0x00000000;
+        } else {
+            return 0xffffffff;
         }
     }
 
