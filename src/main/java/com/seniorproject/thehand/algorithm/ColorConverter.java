@@ -14,9 +14,13 @@ import java.awt.image.MemoryImageSource;
 public class ColorConverter {
 
     protected int[][] rgbPixels, hsvPixels;
-    protected int width, height;
+    public int width, height;
     protected float lowThreshold[] = new float[3];
     protected float highThreshold[] = new float[3];
+    
+    public void process(){
+        RGBtoHSV();
+    }
 
     public void setBufferedImage(BufferedImage bufferedImage) {
         width = bufferedImage.getWidth();
@@ -27,15 +31,22 @@ public class ColorConverter {
                 rgbPixels[x][y] = bufferedImage.getRGB(x, y); // Used (width - x - 1) instead x for flip horizontal
             }
         }
-        RGBtoHSV();
+        
     }
 
     public int[][] getRGBPixels2Dim() {
         return rgbPixels;
     }
 
+    public int[] getPixelOutput(){
+        return ArrayUtil.change2DimTo1Dim(this.hsvPixels, height, width);
+    }
+    
     public BufferedImage getImage() {
+        
+        // you can set the output image by change the this.hsvPixels variable
         int[] pixels = ArrayUtil.change2DimTo1Dim(this.hsvPixels, height, width);
+        
         BufferedImage bimage = new BufferedImage(320, 240, BufferedImage.TYPE_INT_RGB);
         Graphics2D bGr;
         bGr = bimage.createGraphics();
@@ -81,6 +92,7 @@ public class ColorConverter {
             }
         }
     }
+
     // my hand is
     // low 0 0 22
     // high 43 52 59
@@ -88,7 +100,7 @@ public class ColorConverter {
         hsv[0] *= 360f;
         if (lowThreshold[0] <= hsv[0] && hsv[0] <= highThreshold[0]
                 && lowThreshold[1] <= hsv[1] && hsv[1] <= highThreshold[1]
-                && lowThreshold[2] <=hsv[2] && hsv[2] <= highThreshold[2]) {
+                && lowThreshold[2] <= hsv[2] && hsv[2] <= highThreshold[2]) {
             return 0;
         } else {
             return 0xffffffff;
@@ -98,7 +110,7 @@ public class ColorConverter {
     /**
      * set the low threshold using HSV ranged
      *
-     * @param lowThreshold an array of hsv<br/> 
+     * @param lowThreshold an array of hsv<br/>
      * <ul>
      * <li>lowThreshold[0] is range 0 - 360</li>
      * <li>lowThreshold[1] is range 0 - 100</li>
@@ -114,7 +126,7 @@ public class ColorConverter {
     /**
      * set the low threshold using HSV ranged
      *
-     * @param highThreshold an array of hsv<br/> 
+     * @param highThreshold an array of hsv<br/>
      * <ul>
      * <li>highThreshold[0] is range 0 - 360</li>
      * <li>highThreshold[1] is range 0 - 100</li>
@@ -130,11 +142,15 @@ public class ColorConverter {
     @Deprecated
     public void setLowThreshold(int lowH) {
         this.lowThreshold[0] = lowH;
+        this.lowThreshold[1] = 0f;
+        this.lowThreshold[2] = 0f;
     }
 
     @Deprecated
     public void setHighThreshold(int high) {
         this.highThreshold[0] = high;
+        this.highThreshold[1] = 1f;
+        this.highThreshold[2] = 1f;
     }
 
 }

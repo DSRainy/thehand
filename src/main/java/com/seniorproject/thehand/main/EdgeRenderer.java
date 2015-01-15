@@ -1,5 +1,6 @@
 package com.seniorproject.thehand.main;
 
+import com.seniorproject.thehand.algorithm.CannyEdgeDetector;
 import com.seniorproject.thehand.algorithm.ColorConverter;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -14,7 +15,13 @@ public class EdgeRenderer extends JLabel {
 
     private BufferedImage image;
     ColorConverter converter = new ColorConverter();
+    CannyEdgeDetector edgeDetector = new CannyEdgeDetector();
 
+    public EdgeRenderer() {
+        edgeDetector.setLowThreshold(1f);
+        edgeDetector.setHighThreshold(8f);
+    }
+    
     @Override
     public void paintComponent(Graphics g) {
         if (image != null) {
@@ -28,7 +35,11 @@ public class EdgeRenderer extends JLabel {
 
     public void setImage(BufferedImage image) {
         converter.setBufferedImage(image);
-        this.image = converter.getImage();
+        converter.process();
+        edgeDetector.setData(converter.getPixelOutput(), converter.width, converter.height);
+        edgeDetector.process();
+//        this.image = converter.getImage();
+        this.image = edgeDetector.getEdgesImage();
     }
 
     public void setLowThreshold(int h,int s,int v) {
