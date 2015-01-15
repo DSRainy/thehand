@@ -246,7 +246,7 @@ public class App extends javax.swing.JFrame {
         jLabel2.setText("High");
 
         hHighSlider.setMaximum(360);
-        hHighSlider.setValue(0);
+        hHighSlider.setValue(360);
         hHighSlider.setAlignmentX(0.01F);
         hHighSlider.setAlignmentY(0.0F);
 
@@ -328,7 +328,7 @@ public class App extends javax.swing.JFrame {
 
         jLabel11.setText("High");
 
-        sHighSlider.setValue(0);
+        sHighSlider.setValue(100);
         sHighSlider.setAlignmentX(0.01F);
         sHighSlider.setAlignmentY(0.0F);
 
@@ -408,7 +408,7 @@ public class App extends javax.swing.JFrame {
 
         jLabel43.setText("High");
 
-        vHighSlider.setValue(0);
+        vHighSlider.setValue(100);
         vHighSlider.setAlignmentX(0.01F);
         vHighSlider.setAlignmentY(0.0F);
 

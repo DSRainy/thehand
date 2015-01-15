@@ -23,4 +23,16 @@ public class ArrayUtil {
         }
         return matrixOut;
     }
+
+    public static int[][] change1DimTo2Dim(int[] matrix, int col, int row) {
+        int[][] matrixOut = new int[col][row];
+        int i = 0;
+        for (int y = 0; y < row; y++) {
+            for (int x = 0; x < col; x++) {
+                matrixOut[x][y] = matrix[i];
+                i++;
+            }
+        }
+        return matrixOut;
+    }
 }

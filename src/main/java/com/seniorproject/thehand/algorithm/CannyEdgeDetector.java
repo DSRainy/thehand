@@ -1,5 +1,6 @@
 package com.seniorproject.thehand.algorithm;
 
+import com.seniorproject.thehand.utils.ArrayUtil;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
@@ -471,5 +472,8 @@ public class CannyEdgeDetector {
 
     public int[] getData() {
         return this.data;
+    }
+    public int[][] getData2Dim(){
+        return ArrayUtil.change1DimTo2Dim(data, width, height);
     }
 }

@@ -263,7 +263,7 @@
             <Component class="javax.swing.JSlider" name="hHighSlider">
               <Properties>
                 <Property name="maximum" type="int" value="360"/>
-                <Property name="value" type="int" value="0"/>
+                <Property name="value" type="int" value="360"/>
                 <Property name="alignmentX" type="float" value="0.01"/>
                 <Property name="alignmentY" type="float" value="0.0"/>
               </Properties>
@@ -400,7 +400,7 @@
             </Component>
             <Component class="javax.swing.JSlider" name="sHighSlider">
               <Properties>
-                <Property name="value" type="int" value="0"/>
+                <Property name="value" type="int" value="100"/>
                 <Property name="alignmentX" type="float" value="0.01"/>
                 <Property name="alignmentY" type="float" value="0.0"/>
               </Properties>
@@ -532,7 +532,7 @@
             </Component>
             <Component class="javax.swing.JSlider" name="vHighSlider">
               <Properties>
-                <Property name="value" type="int" value="0"/>
+                <Property name="value" type="int" value="100"/>
                 <Property name="alignmentX" type="float" value="0.01"/>
                 <Property name="alignmentY" type="float" value="0.0"/>
               </Properties>
