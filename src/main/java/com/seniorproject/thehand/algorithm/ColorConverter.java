@@ -1,6 +1,7 @@
 package com.seniorproject.thehand.algorithm;
 
 import com.seniorproject.thehand.utils.ArrayUtil;
+import com.seniorproject.thehand.utils.ImageUtil;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics2D;
@@ -17,8 +18,8 @@ public class ColorConverter {
     public int width, height;
     protected float lowThreshold[] = new float[3];
     protected float highThreshold[] = new float[3];
-    
-    public void process(){
+
+    public void process() {
         RGBtoHSV();
     }
 
@@ -31,32 +32,35 @@ public class ColorConverter {
                 rgbPixels[x][y] = bufferedImage.getRGB(x, y); // Used (width - x - 1) instead x for flip horizontal
             }
         }
-        
+
     }
 
     public int[][] getRGBPixels2Dim() {
         return rgbPixels;
     }
 
-    public int[] getPixelOutput(){
-        return ArrayUtil.change2DimTo1Dim(this.hsvPixels, height, width);
+    public int[] getPixelOutput() {
+        return ArrayUtil.change2DTo1D(this.hsvPixels);
     }
-    
+
     public BufferedImage getImage() {
-        
+
         // you can set the output image by change the this.hsvPixels variable
-        int[] pixels = ArrayUtil.change2DimTo1Dim(this.hsvPixels, height, width);
-        
-        BufferedImage bimage = new BufferedImage(320, 240, BufferedImage.TYPE_INT_RGB);
-        Graphics2D bGr;
-        bGr = bimage.createGraphics();
-        bGr.drawImage(new Frame().createImage(new MemoryImageSource(width, height, pixels, 0, width)), 0, 0, null);
-        bGr.dispose();
-        return bimage;
+//        int[] pixels = ArrayUtil.change2DTo1D(this.hsvPixels);
+
+//        BufferedImage bimage = new BufferedImage(320, 240, BufferedImage.TYPE_INT_RGB);
+//        Graphics2D bGr;
+//        bGr = bimage.createGraphics();
+//        bGr.drawImage(new Frame().createImage(new MemoryImageSource(width, height, pixels, 0, width)), 0, 0, null);
+//        bGr.dispose();
+        return ImageUtil.getImage(this.hsvPixels);
     }
 
     private void RGBtoHSV() {
         hsvPixels = new int[width][height];
+        
+//        System.out.println("       width : " + width);
+//        System.out.println("      height : " + height);
         float[] hsv = new float[3];
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {

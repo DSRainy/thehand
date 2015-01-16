@@ -474,6 +474,6 @@ public class CannyEdgeDetector {
         return this.data;
     }
     public int[][] getData2Dim(){
-        return ArrayUtil.change1DimTo2Dim(data, width, height);
+        return ArrayUtil.change1DTo2D(data, width, height);
     }
 }

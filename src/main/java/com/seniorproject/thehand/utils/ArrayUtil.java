@@ -11,10 +11,12 @@ package com.seniorproject.thehand.utils;
  */
 public class ArrayUtil {
 
-    public static int[] change2DimTo1Dim(int[][] matrix, int row, int col) {
+    public static int[] change2DTo1D(int[][] matrix) {
         int i = 0;
+         int row = matrix[1].length;
+         int col = matrix.length;
         int[] matrixOut = new int[row * col];
-
+        
         for (int y = 0; y < row; y++) { // rotate clockwise
             for (int x = 0; x < col; x++) {
                 matrixOut[i] = matrix[x][y];
@@ -24,7 +26,7 @@ public class ArrayUtil {
         return matrixOut;
     }
 
-    public static int[][] change1DimTo2Dim(int[] matrix, int col, int row) {
+    public static int[][] change1DTo2D(int[] matrix, int col, int row) {
         int[][] matrixOut = new int[col][row];
         int i = 0;
         for (int y = 0; y < row; y++) {

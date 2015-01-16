@@ -2,6 +2,7 @@ package com.seniorproject.thehand.main;
 
 import com.seniorproject.thehand.algorithm.CannyEdgeDetector;
 import com.seniorproject.thehand.algorithm.ColorConverter;
+import com.seniorproject.thehand.algorithm.ConvexHull;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -16,6 +17,7 @@ public class EdgeRenderer extends JLabel {
     private BufferedImage image;
     ColorConverter converter = new ColorConverter();
     CannyEdgeDetector edgeDetector = new CannyEdgeDetector();
+    ConvexHull convexHull = new ConvexHull();
 
     public EdgeRenderer() {
         edgeDetector.setLowThreshold(1f);
@@ -38,8 +40,11 @@ public class EdgeRenderer extends JLabel {
         converter.process();
         edgeDetector.setData(converter.getPixelOutput(), converter.width, converter.height);
         edgeDetector.process();
+        convexHull.setInput(edgeDetector.getData2Dim());
+        convexHull.execute();
 //        this.image = converter.getImage();
-        this.image = edgeDetector.getEdgesImage();
+//        this.image = edgeDetector.getEdgesImage();
+        this.image = convexHull.getImage();
     }
 
     public void setLowThreshold(int h,int s,int v) {
