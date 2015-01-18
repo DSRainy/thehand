@@ -9,7 +9,6 @@ import com.github.sarxos.webcam.Webcam;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import javax.swing.JSlider;
-import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
 
 /**

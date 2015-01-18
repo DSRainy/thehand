@@ -3,10 +3,7 @@ package com.seniorproject.thehand.algorithm;
 import com.seniorproject.thehand.utils.ArrayUtil;
 import com.seniorproject.thehand.utils.ImageUtil;
 import java.awt.Color;
-import java.awt.Frame;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.MemoryImageSource;
 
 /**
  *
@@ -46,21 +43,11 @@ public class ColorConverter {
     public BufferedImage getImage() {
 
         // you can set the output image by change the this.hsvPixels variable
-//        int[] pixels = ArrayUtil.change2DTo1D(this.hsvPixels);
-
-//        BufferedImage bimage = new BufferedImage(320, 240, BufferedImage.TYPE_INT_RGB);
-//        Graphics2D bGr;
-//        bGr = bimage.createGraphics();
-//        bGr.drawImage(new Frame().createImage(new MemoryImageSource(width, height, pixels, 0, width)), 0, 0, null);
-//        bGr.dispose();
         return ImageUtil.getImage(this.hsvPixels);
     }
 
     private void RGBtoHSV() {
         hsvPixels = new int[width][height];
-        
-//        System.out.println("       width : " + width);
-//        System.out.println("      height : " + height);
         float[] hsv = new float[3];
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -91,7 +78,7 @@ public class ColorConverter {
                 int g = rgbPixels[x][y] >> 8 & 0xFF;
                 int b = rgbPixels[x][y] & 0xFF;
                 hsv = Color.RGBtoHSB(r, g, b, hsv);
-//                hsvPixels[x][y] = Color.getHSBColor(hsv[0], hsv[1], hsv[2]).getRGB();
+//                hsvPixels[x][y] = Color.getHSBColor(hsv[0], 1, 1).getRGB();
                 hsvPixels[x][y] = threshold(hsv);
             }
         }
@@ -100,6 +87,12 @@ public class ColorConverter {
     // my hand is
     // low 0 0 22
     // high 43 52 59
+    /**
+     * this method is threshold using hsv ranged 
+     * @param hsv a hsv value for checking 
+     * @return black pixel if <b>hsv</b> is in range <br/>
+     * 
+     */
     private int threshold(float[] hsv) {
         hsv[0] *= 360f;
         if (lowThreshold[0] <= hsv[0] && hsv[0] <= highThreshold[0]

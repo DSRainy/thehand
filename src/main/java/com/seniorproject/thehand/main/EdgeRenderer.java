@@ -3,6 +3,7 @@ package com.seniorproject.thehand.main;
 import com.seniorproject.thehand.algorithm.CannyEdgeDetector;
 import com.seniorproject.thehand.algorithm.ColorConverter;
 import com.seniorproject.thehand.algorithm.ConvexHull;
+import com.seniorproject.thehand.morohology.Opening;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -18,12 +19,13 @@ public class EdgeRenderer extends JLabel {
     ColorConverter converter = new ColorConverter();
     CannyEdgeDetector edgeDetector = new CannyEdgeDetector();
     ConvexHull convexHull = new ConvexHull();
+    Opening opening = new Opening();
 
     public EdgeRenderer() {
         edgeDetector.setLowThreshold(1f);
         edgeDetector.setHighThreshold(8f);
     }
-    
+
     @Override
     public void paintComponent(Graphics g) {
         if (image != null) {
@@ -42,18 +44,18 @@ public class EdgeRenderer extends JLabel {
         edgeDetector.process();
         convexHull.setInput(edgeDetector.getData2Dim());
         convexHull.execute();
-//        this.image = converter.getImage();
+//        this.image = opening.execute(converter.getImage());
 //        this.image = edgeDetector.getEdgesImage();
         this.image = convexHull.getImage();
     }
 
-    public void setLowThreshold(int h,int s,int v) {
-        int hsv[] = {h,s,v};
+    public void setLowThreshold(int h, int s, int v) {
+        int hsv[] = {h, s, v};
         converter.setLowThreshold(hsv);
     }
 
-    public void setHighThreshold(int h,int s,int v) {
-        int hsv[] = {h,s,v};
+    public void setHighThreshold(int h, int s, int v) {
+        int hsv[] = {h, s, v};
         converter.setHighThreshold(hsv);
     }
 
