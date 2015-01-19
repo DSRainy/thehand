@@ -78,7 +78,7 @@ public class ColorConverter {
                 int g = rgbPixels[x][y] >> 8 & 0xFF;
                 int b = rgbPixels[x][y] & 0xFF;
                 hsv = Color.RGBtoHSB(r, g, b, hsv);
-//                hsvPixels[x][y] = Color.getHSBColor(hsv[0], 1, 1).getRGB();
+//                hsvPixels[x][y] = Color.getHSBColor(hsv[0], hsv[1], hsv[2]).getRGB();
                 hsvPixels[x][y] = threshold(hsv);
             }
         }

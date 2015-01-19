@@ -33,7 +33,7 @@ public class Closing extends AbstractOperation {
     public BufferedImage execute(BufferedImage img) {
         if (img.getType() != BufferedImage.TYPE_BYTE_GRAY) {
             throw new IllegalArgumentException(
-                    "The image must be of type TYPE_BYTE_GRAY");
+                    "The image must be of type TYPE_BYTE_GRAY " + img.getType() + " " + BufferedImage.TYPE_INT_ARGB + " " + BufferedImage.TYPE_BYTE_GRAY);
         }
 
         BufferedImage dilatedImg, closedImg;

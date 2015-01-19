@@ -17,9 +17,10 @@ import javax.swing.SwingWorker;
  */
 public class App extends javax.swing.JFrame {
 
-    Webcam webcam = Webcam.getDefault();
+    Webcam webcam = Webcam.getWebcams().get(1);
 
     public App() {
+
         initComponents();
         /* The available Dimension are : 
          (176, 144) 
@@ -59,42 +60,17 @@ public class App extends javax.swing.JFrame {
                     saturateHigh.repaint();
                     valueLow.repaint();
                     valueHigh.repaint();
-                    
-                    if (isSliderChangeValue(hLowSlider) || isSliderChangeValue(sLowSlider) || isSliderChangeValue(vLowSlider)) {
+
+                    if (isSliderChangeValue(hLowSlider)
+                            || isSliderChangeValue(sLowSlider)
+                            || isSliderChangeValue(vLowSlider)) {
                         edgeRenderer1.setLowThreshold(hLowSlider.getValue(), sLowSlider.getValue(), vLowSlider.getValue());
                     }
-                    if (isSliderChangeValue(hHighSlider) || isSliderChangeValue(sHighSlider) || isSliderChangeValue(vHighSlider)) {
+                    if (isSliderChangeValue(hHighSlider)
+                            || isSliderChangeValue(sHighSlider)
+                            || isSliderChangeValue(vHighSlider)) {
                         edgeRenderer1.setHighThreshold(hHighSlider.getValue(), sHighSlider.getValue(), vHighSlider.getValue());
                     }
-//                    if (isSliderChangeValue(hLowSlider)) {
-//                        int value
-//                        checkCurrentSliderState(hLowSlider,hHighSlider);
-//                        edgeRenderer1.setLowThreshold(hLowSlider.getValue());
-//                        hueLow.setText(hLowSlider.getValue() + "");
-//
-//                    }
-//                    if (hHighSlider.getValueIsAdjusting()) {
-//                        if (hLowSlider.getValue() > hHighSlider.getValue()) {
-//                            hLowSlider.setValue(hHighSlider.getValue());
-//                        }
-//                        edgeRenderer1.setHighThreshold(hHighSlider.getValue());
-//                        hueHigh.setText(hHighSlider.getValue() + "");
-//                    }
-//                    if (sLowSlider.getValueIsAdjusting()) {
-//                        if (sLowSlider.getValue() > sHighSlider.getValue()) {
-//                            sHighSlider.setValue(sLowSlider.getValue());
-//                        }
-//                        edgeRenderer1.setLowThreshold(sLowSlider.getValue());
-//                        hueLow.setText(sLowSlider.getValue() + "");
-//                        
-//                    }
-//                    if (sHighSlider.getValueIsAdjusting()) {
-//                        if (sLowSlider.getValue() > sHighSlider.getValue()) {
-//                            sLowSlider.setValue(sHighSlider.getValue());
-//                        }
-//                        edgeRenderer1.setHighThreshold(sHighSlider.getValue());
-//                        hueHigh.setText(sHighSlider.getValue() + "");
-//                    }
 
                 }
                 return null;
@@ -127,10 +103,6 @@ public class App extends javax.swing.JFrame {
             }
         }
 
-    }
-
-    private boolean isValueSliderWrongState() {
-        return vLowSlider.getValue() > vHighSlider.getValue();
     }
 
     /**

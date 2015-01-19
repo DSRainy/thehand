@@ -3,7 +3,7 @@ package com.seniorproject.thehand.main;
 import com.seniorproject.thehand.algorithm.CannyEdgeDetector;
 import com.seniorproject.thehand.algorithm.ColorConverter;
 import com.seniorproject.thehand.algorithm.ConvexHull;
-import com.seniorproject.thehand.morohology.Opening;
+import com.seniorproject.thehand.morohology.Closing;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -19,7 +19,7 @@ public class EdgeRenderer extends JLabel {
     ColorConverter converter = new ColorConverter();
     CannyEdgeDetector edgeDetector = new CannyEdgeDetector();
     ConvexHull convexHull = new ConvexHull();
-    Opening opening = new Opening();
+    Closing closing = new Closing();
 
     public EdgeRenderer() {
         edgeDetector.setLowThreshold(1f);
@@ -40,13 +40,21 @@ public class EdgeRenderer extends JLabel {
     public void setImage(BufferedImage image) {
         converter.setBufferedImage(image);
         converter.process();
-        edgeDetector.setData(converter.getPixelOutput(), converter.width, converter.height);
-        edgeDetector.process();
-        convexHull.setInput(edgeDetector.getData2Dim());
-        convexHull.execute();
-//        this.image = opening.execute(converter.getImage());
-//        this.image = edgeDetector.getEdgesImage();
-        this.image = convexHull.getImage();
+//        edgeDetector.setData(converter.getPixelOutput(), converter.width, converter.height);
+//        edgeDetector.process();f
+//        convexHull.setInput(edgeDetector.getData2Dim());
+//        convexHull.execute();
+        try {
+            BufferedImage bufImg = converter.getImage();
+            BufferedImage convertedImg = new BufferedImage(bufImg.getWidth(), bufImg.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
+            convertedImg.getGraphics().drawImage(bufImg, 0, 0, null);
+//            BufferedImage bi = new BufferedImage
+            this.image = closing.execute(convertedImg);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//        this.image = converter.getImage();
     }
 
     public void setLowThreshold(int h, int s, int v) {

@@ -41,7 +41,7 @@ public class Dilation extends AbstractOperation {
          */
         @Override
         public BufferedImage execute(BufferedImage img) {
-                if (img.getType() != BufferedImage.TYPE_INT_ARGB)
+                if (img.getType() != BufferedImage.TYPE_BYTE_GRAY)
                         throw new IllegalArgumentException(
                                         "The image must be of type TYPE_BYTE_GRAY");
                 BufferedImage dilatedImg = new BufferedImage(img.getWidth(),

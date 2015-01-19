@@ -35,7 +35,7 @@ public class Erosion extends AbstractOperation {
          */
         @Override
         public BufferedImage execute(BufferedImage img) {
-                if(img.getType()!=BufferedImage.TYPE_INT_ARGB)
+                if(img.getType()!=BufferedImage.TYPE_BYTE_GRAY)
                         throw new IllegalArgumentException("The image must be of type TYPE_BYTE_GRAY");
                 BufferedImage erodedImg = new BufferedImage(img.getWidth(),
                                 img.getHeight(), img.getType());
