@@ -4,6 +4,7 @@ import com.seniorproject.thehand.algorithm.CannyEdgeDetector;
 import com.seniorproject.thehand.algorithm.ColorConverter;
 import com.seniorproject.thehand.algorithm.ConvexHull;
 import com.seniorproject.thehand.morohology.Closing;
+import com.seniorproject.thehand.utils.ImageUtil;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -44,16 +45,9 @@ public class EdgeRenderer extends JLabel {
 //        edgeDetector.process();f
 //        convexHull.setInput(edgeDetector.getData2Dim());
 //        convexHull.execute();
-        try {
-            BufferedImage bufImg = converter.getImage();
-            BufferedImage convertedImg = new BufferedImage(bufImg.getWidth(), bufImg.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
-            convertedImg.getGraphics().drawImage(bufImg, 0, 0, null);
-//            BufferedImage bi = new BufferedImage
-            this.image = closing.execute(convertedImg);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.image = closing.execute(ImageUtil.convertType(converter.getImage(), BufferedImage.TYPE_BYTE_GRAY));
+
 //        this.image = converter.getImage();
     }
 
