@@ -4,6 +4,8 @@ import com.seniorproject.thehand.algorithm.CannyEdgeDetector;
 import com.seniorproject.thehand.algorithm.ColorConverter;
 import com.seniorproject.thehand.algorithm.ConvexHull;
 import com.seniorproject.thehand.morohology.Closing;
+import com.seniorproject.thehand.morohology.Opening;
+import com.seniorproject.thehand.utils.ImageUtil;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -19,7 +21,7 @@ public class EdgeRenderer extends JLabel {
     ColorConverter converter = new ColorConverter();
     CannyEdgeDetector edgeDetector = new CannyEdgeDetector();
     ConvexHull convexHull = new ConvexHull();
-    Closing closing = new Closing();
+    Opening opening = new Opening();
 
     public EdgeRenderer() {
         edgeDetector.setLowThreshold(1f);
@@ -40,21 +42,18 @@ public class EdgeRenderer extends JLabel {
     public void setImage(BufferedImage image) {
         converter.setBufferedImage(image);
         converter.process();
+        this.image = opening.execute(ImageUtil.convertType(converter.getImage(), BufferedImage.TYPE_BYTE_GRAY));
+//        this.image = closing.execute(ImageUtil.convertType(converter.getImage(), BufferedImage.TYPE_BYTE_GRAY));
+//        edgeDetector.setSourceImage(this.image);
 //        edgeDetector.setData(converter.getPixelOutput(), converter.width, converter.height);
-//        edgeDetector.process();f
+//        edgeDetector.process();
 //        convexHull.setInput(edgeDetector.getData2Dim());
 //        convexHull.execute();
-        try {
-            BufferedImage bufImg = converter.getImage();
-            BufferedImage convertedImg = new BufferedImage(bufImg.getWidth(), bufImg.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
-            convertedImg.getGraphics().drawImage(bufImg, 0, 0, null);
-//            BufferedImage bi = new BufferedImage
-            this.image = closing.execute(convertedImg);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 //        this.image = converter.getImage();
+//        this.image = edgeDetector.getEdgesImage();
+//        this.image = convexHull.getImage();
+//        this.image = image;
+
     }
 
     public void setLowThreshold(int h, int s, int v) {

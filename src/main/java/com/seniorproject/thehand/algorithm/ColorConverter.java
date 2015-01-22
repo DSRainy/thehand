@@ -16,8 +16,30 @@ public class ColorConverter {
     protected float lowThreshold[] = new float[3];
     protected float highThreshold[] = new float[3];
 
+    public int[] r, g, b;
+    public float[] h= new float[width*height], s= new float[width*height], v= new float[width*height];
+    private static int i = 0;
+
     public void process() {
         RGBtoHSV();
+    }
+
+    public void separateRGB() {
+        int[] pixel = ArrayUtil.change2DTo1D(rgbPixels);
+        for (int i = 0; i < width * height; i++) {
+            int[] rgb = ImageUtil.separate(pixel[i]);
+            r[i] = rgb[0];
+            g[i] = rgb[1];
+            b[i] = rgb[2];
+        }
+    }
+
+    public void separateHSV(float hsv[]) {
+        
+        h[i] = hsv[0];
+        s[i] = hsv[1];
+        v[i] = hsv[2];
+        i++;
     }
 
     public void setBufferedImage(BufferedImage bufferedImage) {
@@ -41,7 +63,6 @@ public class ColorConverter {
     }
 
     public BufferedImage getImage() {
-
         // you can set the output image by change the this.hsvPixels variable
         return ImageUtil.getImage(this.hsvPixels);
     }
@@ -78,7 +99,8 @@ public class ColorConverter {
                 int g = rgbPixels[x][y] >> 8 & 0xFF;
                 int b = rgbPixels[x][y] & 0xFF;
                 hsv = Color.RGBtoHSB(r, g, b, hsv);
-//                hsvPixels[x][y] = Color.getHSBColor(hsv[0], hsv[1], hsv[2]).getRGB();
+//                separateHSV(hsv);
+//                hsvPixels[x][y] = Color.getHSBColor(hsv[0], 1, 1).getRGB();
                 hsvPixels[x][y] = threshold(hsv);
             }
         }
@@ -88,10 +110,11 @@ public class ColorConverter {
     // low 0 0 22
     // high 43 52 59
     /**
-     * this method is threshold using hsv ranged 
-     * @param hsv a hsv value for checking 
+     * this method is threshold using hsv ranged
+     *
+     * @param hsv a hsv value for checking
      * @return black pixel if <b>hsv</b> is in range <br/>
-     * 
+     *
      */
     private int threshold(float[] hsv) {
         hsv[0] *= 360f;

@@ -20,7 +20,7 @@ public class App extends javax.swing.JFrame {
     Webcam webcam = Webcam.getWebcams().get(1);
 
     public App() {
-
+        
         initComponents();
         /* The available Dimension are : 
          (176, 144) 

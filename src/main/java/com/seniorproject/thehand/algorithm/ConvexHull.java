@@ -131,7 +131,7 @@ public class ConvexHull {
     }
 
     public BufferedImage getImage() {
-        return ImageUtil.getImage(dataOutput);
+        return ImageUtil.getImage(getDataOutput());
     }
 
 //    private Comparator compare() {

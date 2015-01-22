@@ -58,6 +58,9 @@ public class CannyEdgeDetector {
      */
     public void setSourceImage(BufferedImage image) {
         sourceImage = image;
+        width = sourceImage.getWidth();
+        height = sourceImage.getHeight();
+        picsize = width* height;
     }
 
     /**
@@ -157,7 +160,7 @@ public class CannyEdgeDetector {
         try {
             picsize = width * height;
             initArrays();
-        readLuminance();
+            readLuminance();
             if (contrastNormalized) {
                 normalizeContrast();
             }
@@ -176,6 +179,9 @@ public class CannyEdgeDetector {
 
     // private utility methods
     private void initArrays() {
+        if(sourceImage!=null){
+            data = new int[picsize];
+        }
         magnitude = new int[picsize];
         xConv = new float[picsize];
         yConv = new float[picsize];
@@ -194,7 +200,6 @@ public class CannyEdgeDetector {
 //        yGradient = new float[picsize];
 //        }
 //    }
-
     //NOTE: The elements of the method below (specifically the technique for
     //non-maximal suppression and the technique for gradient computation)
     //are derived from an implementation posted in the following forum (with the
@@ -416,7 +421,7 @@ public class CannyEdgeDetector {
     }
 
     private void readLuminance() {
-        int type = BufferedImage.TYPE_INT_ARGB;
+        int type = sourceImage == null ? BufferedImage.TYPE_INT_ARGB : sourceImage.getType();
         if (type == BufferedImage.TYPE_INT_RGB || type == BufferedImage.TYPE_INT_ARGB) {
             int[] pixels = data;
             for (int i = 0; i < picsize; i++) {
@@ -426,8 +431,11 @@ public class CannyEdgeDetector {
                 int b = p & 0xff;
                 data[i] = luminance(r, g, b);
             }
-        }  else {
-            throw new IllegalArgumentException("Unsupported image type: " + type);
+        } else if (type == BufferedImage.TYPE_BYTE_GRAY) {
+            byte[] pixels = (byte[]) sourceImage.getData().getDataElements(0, 0, width, height, null);
+            for (int i = 0; i < picsize; i++) {
+                data[i] = (pixels[i] & 0xff);
+            }
         }
     }
 
@@ -473,7 +481,8 @@ public class CannyEdgeDetector {
     public int[] getData() {
         return this.data;
     }
-    public int[][] getData2Dim(){
+
+    public int[][] getData2Dim() {
         return ArrayUtil.change1DTo2D(data, width, height);
     }
 }

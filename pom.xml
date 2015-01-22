@@ -33,5 +33,10 @@
             <artifactId>webcam-capture</artifactId>
             <version>0.3.9</version>
         </dependency>
+        <dependency>
+            <groupId>org.encog</groupId>
+            <artifactId>encog-core</artifactId>
+            <version>3.3.0</version>
+        </dependency>
     </dependencies>
 </project>
