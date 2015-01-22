@@ -1,10 +1,5 @@
 package com.seniorproject.thehand.main;
 
-import com.seniorproject.thehand.algorithm.CannyEdgeDetector;
-import com.seniorproject.thehand.algorithm.ColorConverter;
-import com.seniorproject.thehand.algorithm.ConvexHull;
-import com.seniorproject.thehand.morohology.Opening;
-import com.seniorproject.thehand.utils.ImageUtil;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -17,10 +12,6 @@ import javax.swing.JLabel;
 public class WebCamRenderer extends JLabel {
 
     private BufferedImage image;
-    ColorConverter converter = new ColorConverter();
-    CannyEdgeDetector edgeDetector = new CannyEdgeDetector();
-    ConvexHull convexHull = new ConvexHull();
-    Opening opening = new Opening();
 
     @Override
     public void paintComponent(Graphics g) {
@@ -34,18 +25,6 @@ public class WebCamRenderer extends JLabel {
     }
 
     public void setImage(BufferedImage image) {
-//        converter.setBufferedImage(image);
-//        converter.process();
-//        this.image = opening.execute(ImageUtil.convertType(converter.getImage(), BufferedImage.TYPE_BYTE_GRAY));
-//        this.image = opening.execute(ImageUtil.convertType(converter.getImage(), BufferedImage.TYPE_BYTE_GRAY));
-//        edgeDetector.setSourceImage(this.image);
-//        edgeDetector.setData(converter.getPixelOutput(), converter.width, converter.height);
-//        edgeDetector.process();
-//        convexHull.setInput(edgeDetector.getData2Dim());
-//        convexHull.execute();
-//        this.image = converter.getImage();
-//        this.image = edgeDetector.getEdgesImage();
-//        this.image = convexHull.getImage();
         this.image = image;
     }
 

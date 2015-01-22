@@ -123,7 +123,7 @@ public class ColorConverter {
                 && lowThreshold[2] <= hsv[2] && hsv[2] <= highThreshold[2]) {
             return 0;
         } else {
-            return 0xffffffff;
+            return -1;
         }
     }
 

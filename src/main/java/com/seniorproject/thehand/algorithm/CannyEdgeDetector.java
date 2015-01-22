@@ -412,7 +412,7 @@ public class CannyEdgeDetector {
 
     private void thresholdEdges() {
         for (int i = 0; i < picsize; i++) {
-            data[i] = data[i] > 0 ? -1 : 0xff000000;
+            data[i] = data[i] > 0 ? 0xff000000 : -1;
         }
     }
 
