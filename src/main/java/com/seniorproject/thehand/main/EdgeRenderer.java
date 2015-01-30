@@ -46,15 +46,15 @@ public class EdgeRenderer extends JLabel {
         edgeDetector.setSourceImage(this.image);
 //        edgeDetector.setData(converter.getPixelOutput(), converter.width, converter.height);
         edgeDetector.process();
-        fastConvexHull.setInput(edgeDetector.getData2Dim());
-        try {
-            fastConvexHull.execute();
-            this.image = fastConvexHull.getImage();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+//        fastConvexHull.setInput(edgeDetector.getData2Dim());
+//        try {
+//            fastConvexHull.execute();
+//            this.image = fastConvexHull.getImage();
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
             this.image = edgeDetector.getEdgesImage();
-
-        }
+//
+//        }
 
 //        convexHull.setInput(edgeDetector.getData2Dim());
 //        convexHull.execute();

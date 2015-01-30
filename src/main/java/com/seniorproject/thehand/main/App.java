@@ -8,7 +8,10 @@ package com.seniorproject.thehand.main;
 import com.github.sarxos.webcam.Webcam;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.swing.JSlider;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 /**
@@ -20,7 +23,7 @@ public class App extends javax.swing.JFrame {
     Webcam webcam = Webcam.getWebcams().get(1);
 
     public App() {
-        
+
         initComponents();
         /* The available Dimension are : 
          (176, 144) 
@@ -30,19 +33,15 @@ public class App extends javax.swing.JFrame {
          (640, 480) 
          (1024, 768)
          */
+
         webcam.setViewSize(new Dimension(320, 240));
-        SwingWorker worker = new SwingWorker() {
+        webcam.open();
+
+        SwingWorker worker2 = new SwingWorker() {
 
             @Override
             protected Object doInBackground() throws Exception {
-                webcam.open();
                 while (isVisible()) {
-                    final BufferedImage bufferedImage = webcam.getImage();
-                    webCamRenderer1.setImage(bufferedImage);
-                    edgeRenderer1.setImage(bufferedImage);
-                    webCamRenderer1.repaint();
-                    edgeRenderer1.repaint();
-
                     checkCurrentSliderState(hLowSlider, hHighSlider);
                     checkCurrentSliderState(sLowSlider, sHighSlider);
                     checkCurrentSliderState(vLowSlider, vHighSlider);
@@ -71,7 +70,62 @@ public class App extends javax.swing.JFrame {
                             || isSliderChangeValue(vHighSlider)) {
                         edgeRenderer1.setHighThreshold(hHighSlider.getValue(), sHighSlider.getValue(), vHighSlider.getValue());
                     }
+                }
 
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                super.done();
+            }
+        };
+
+        worker2.execute();
+
+//        TimerTask updateFPS = new TimerTask() {
+//            @Override
+//            public void run() {
+//                SwingUtilities.invokeLater(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        fpsLabel.setText("" + count);
+//                    }
+//                });
+//                count = 0;
+//            }
+//        };
+//        Timer t = new Timer();
+//        t.scheduleAtFixedRate(updateFPS, 1000, 1000);
+        SwingWorker worker = new SwingWorker() {
+            int count = 0;
+
+            @Override
+            protected Object doInBackground() throws Exception {
+
+                TimerTask updateFPS = new TimerTask() {
+                    @Override
+                    public void run() {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                fpsLabel.setText("" + count);
+                                count = 0;
+                            }
+                        });
+                    }
+                };
+
+                Timer t = new Timer();
+                t.scheduleAtFixedRate(updateFPS, 1000, 1000);
+
+                while (isVisible()) {
+                    final BufferedImage bufferedImage = webcam.getImage();
+                    edgeRenderer1.setImage(bufferedImage);
+                    edgeRenderer1.repaint();
+                    webCamRenderer1.setImage(bufferedImage);
+                    webCamRenderer1.repaint();
+                    count++;
                 }
                 return null;
             }
@@ -153,6 +207,8 @@ public class App extends javax.swing.JFrame {
         jLabel46 = new javax.swing.JLabel();
         valueHigh = new javax.swing.JLabel();
         valueLow = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        fpsLabel = new javax.swing.JLabel();
 
         jRadioButton1.setText("jRadioButton1");
 
@@ -448,6 +504,10 @@ public class App extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jLabel6.setText("FPS : ");
+
+        fpsLabel.setText("0");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -465,11 +525,21 @@ public class App extends javax.swing.JFrame {
                     .addComponent(huePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(saturatePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(21, 21, 21))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(fpsLabel)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(88, 88, 88)
+                .addGap(56, 56, 56)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(fpsLabel))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -525,6 +595,7 @@ public class App extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.seniorproject.thehand.main.EdgeRenderer edgeRenderer1;
+    private javax.swing.JLabel fpsLabel;
     private javax.swing.JSlider hHighSlider;
     private javax.swing.JSlider hLowSlider;
     private javax.swing.JLabel hueHigh;
@@ -546,6 +617,7 @@ public class App extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel45;
     private javax.swing.JLabel jLabel46;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
