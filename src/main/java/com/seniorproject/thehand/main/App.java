@@ -8,8 +8,10 @@ package com.seniorproject.thehand.main;
 import com.github.sarxos.webcam.Webcam;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.imageio.ImageIO;
 import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
@@ -36,12 +38,38 @@ public class App extends javax.swing.JFrame {
 
         webcam.setViewSize(new Dimension(320, 240));
         webcam.open();
-
-        SwingWorker worker2 = new SwingWorker() {
+        
+        SwingWorker worker = new SwingWorker() {
+            int count = 0;
 
             @Override
             protected Object doInBackground() throws Exception {
+
+                TimerTask updateFPS = new TimerTask() {
+                    @Override
+                    public void run() {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                fpsLabel.setText("" + count);
+                                count = 0;
+                            }
+                        });
+                    }
+                };
+
+                Timer t = new Timer();
+                t.scheduleAtFixedRate(updateFPS, 1000, 1000);
+
                 while (isVisible()) {
+//                    final BufferedImage bufferedImage = webcam.getImage();
+                    final BufferedImage bufferedImage = ImageIO.read(new File("E:\\001.jpg"));
+                    edgeRenderer1.setImage(bufferedImage);
+                    edgeRenderer1.repaint();
+                    webCamRenderer1.setImage(bufferedImage);
+                    Thread.sleep(100);
+                    webCamRenderer1.repaint();
+                    count++;
                     checkCurrentSliderState(hLowSlider, hHighSlider);
                     checkCurrentSliderState(sLowSlider, sHighSlider);
                     checkCurrentSliderState(vLowSlider, vHighSlider);
@@ -70,62 +98,6 @@ public class App extends javax.swing.JFrame {
                             || isSliderChangeValue(vHighSlider)) {
                         edgeRenderer1.setHighThreshold(hHighSlider.getValue(), sHighSlider.getValue(), vHighSlider.getValue());
                     }
-                }
-
-                return null;
-            }
-
-            @Override
-            protected void done() {
-                super.done();
-            }
-        };
-
-        worker2.execute();
-
-//        TimerTask updateFPS = new TimerTask() {
-//            @Override
-//            public void run() {
-//                SwingUtilities.invokeLater(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        fpsLabel.setText("" + count);
-//                    }
-//                });
-//                count = 0;
-//            }
-//        };
-//        Timer t = new Timer();
-//        t.scheduleAtFixedRate(updateFPS, 1000, 1000);
-        SwingWorker worker = new SwingWorker() {
-            int count = 0;
-
-            @Override
-            protected Object doInBackground() throws Exception {
-
-                TimerTask updateFPS = new TimerTask() {
-                    @Override
-                    public void run() {
-                        SwingUtilities.invokeLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                fpsLabel.setText("" + count);
-                                count = 0;
-                            }
-                        });
-                    }
-                };
-
-                Timer t = new Timer();
-                t.scheduleAtFixedRate(updateFPS, 1000, 1000);
-
-                while (isVisible()) {
-                    final BufferedImage bufferedImage = webcam.getImage();
-                    edgeRenderer1.setImage(bufferedImage);
-                    edgeRenderer1.repaint();
-                    webCamRenderer1.setImage(bufferedImage);
-                    webCamRenderer1.repaint();
-                    count++;
                 }
                 return null;
             }

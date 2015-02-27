@@ -59,9 +59,9 @@ public class ImageUtil {
         return output;
     }
 
-    private static int[][] convertTo2DWithoutUsingGetRGB(BufferedImage image) {
+    public static int[][] convertTo2DWithoutUsingGetRGB(BufferedImage image) {
 
-        final byte[] pixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+        final int[] pixels = (image.getRaster().getDataBuffer()).getOffsets();
         final int width = image.getWidth();
         final int height = image.getHeight();
         final boolean hasAlphaChannel = image.getAlphaRaster() != null;
@@ -69,7 +69,7 @@ public class ImageUtil {
         int[][] result = new int[height][width];
         if (hasAlphaChannel) {
             final int pixelLength = 4;
-            for (int pixel = 0, row = 0, col = 0; pixel < pixels.length; pixel += pixelLength) {
+            for (int pixel = 0, row = 0, col = 0; pixel < pixels.length - 4; pixel += pixelLength) {
                 int argb = 0;
                 argb += (((int) pixels[pixel] & 0xff) << 24); // alpha
                 argb += ((int) pixels[pixel + 1] & 0xff); // blue
@@ -100,5 +100,17 @@ public class ImageUtil {
         }
 
         return result;
+    }
+
+    public static int[][] changeImageToArray(BufferedImage bufferedImage) {
+        int width = bufferedImage.getWidth();
+        int height = bufferedImage.getHeight();
+        int[][] rgbPixels = new int[width][height];
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                rgbPixels[x][y] = bufferedImage.getRGB(x, y); // Used (width - x - 1) instead x for flip horizontal
+            }
+        }
+        return rgbPixels;
     }
 }
