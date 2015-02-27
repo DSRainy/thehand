@@ -51,6 +51,7 @@ public class ColorConverter {
                 rgbPixels[x][y] = bufferedImage.getRGB(x, y); // Used (width - x - 1) instead x for flip horizontal
             }
         }
+
     }
 
     public int[][] getRGBPixels2Dim() {
@@ -99,7 +100,7 @@ public class ColorConverter {
                 int b = rgbPixels[x][y] & 0xFF;
                 hsv = Color.RGBtoHSB(r, g, b, hsv);
 //                separateHSV(hsv);
-//                hsvPixels[x][y] = Color.getHSBColor(hsv[0], hsv[1], 1).getRGB();
+//                hsvPixels[x][y] = Color.getHSBColor(hsv[0], 1, 1).getRGB();
                 hsvPixels[x][y] = threshold(hsv);
             }
         }

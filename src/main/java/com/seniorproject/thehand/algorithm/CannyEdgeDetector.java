@@ -414,10 +414,6 @@ public class CannyEdgeDetector {
         for (int i = 0; i < picsize; i++) {
             data[i] = data[i] > 0 ? 0xff000000 : -1;
         }
-        data[2247] = -1;
-        data[2552] = -1;
-        data[74247] = -1;
-        data[74552] = -1;
     }
 
     private int luminance(float r, float g, float b) {

@@ -3,7 +3,6 @@ package com.seniorproject.thehand.main;
 import com.seniorproject.thehand.algorithm.CannyEdgeDetector;
 import com.seniorproject.thehand.algorithm.ColorConverter;
 import com.seniorproject.thehand.algorithm.FastConvexHull;
-import com.seniorproject.thehand.algorithm.QuickHull;
 import com.seniorproject.thehand.morohology.Opening;
 import com.seniorproject.thehand.utils.ImageUtil;
 import java.awt.Graphics;
@@ -21,7 +20,6 @@ public class EdgeRenderer extends JLabel {
     ColorConverter converter = new ColorConverter();
     CannyEdgeDetector edgeDetector = new CannyEdgeDetector();
     FastConvexHull fastConvexHull = new FastConvexHull();
-    QuickHull convexHull = new QuickHull();
     Opening opening = new Opening();
 
     public EdgeRenderer() {
@@ -43,22 +41,26 @@ public class EdgeRenderer extends JLabel {
     public void setImage(BufferedImage image) {
         converter.setBufferedImage(image);
         converter.process();
-        this.image = converter.getImage();
         this.image = opening.execute(ImageUtil.convertType(converter.getImage(), BufferedImage.TYPE_BYTE_GRAY));
+//        this.image = closing.execute(ImageUtil.convertType(converter.getImage(), BufferedImage.TYPE_BYTE_GRAY));
         edgeDetector.setSourceImage(this.image);
+//        edgeDetector.setData(converter.getPixelOutput(), converter.width, converter.height);
         edgeDetector.process();
-        try {
-            convexHull.setImage(this.image);
-            convexHull.setInput(ImageUtil.changeImageToArray(edgeDetector.getEdgesImage()));
-            convexHull.quickHull();
-            this.image = convexHull.getImage();
-        } catch (Exception e) {
+//        fastConvexHull.setInput(edgeDetector.getData2Dim());
+//        try {
+//            fastConvexHull.execute();
+//            this.image = fastConvexHull.getImage();
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
             this.image = edgeDetector.getEdgesImage();
-        }
+//
+//        }
 
-//        fastConvexHull.setInput(ImageUtil.convertTo2DWithoutUsingGetRGB(edgeDetector.getEdgesImage()));
-//        fastConvexHull.execute();
-//        this.image = fastConvexHull.getImage();
+//        convexHull.setInput(edgeDetector.getData2Dim());
+//        convexHull.execute();
+//        this.image = converter.getImage();
+//        this.image = convexHull.getImage();
+//        this.image = image;
     }
 
     public void setLowThreshold(int h, int s, int v) {
