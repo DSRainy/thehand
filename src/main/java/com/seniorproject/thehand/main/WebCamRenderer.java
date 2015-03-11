@@ -17,9 +17,9 @@ public class WebCamRenderer extends JLabel {
     public void paintComponent(Graphics g) {
         if (image != null) {
             Graphics2D g2 = (Graphics2D) g;
-            
+
             //Fixed the sized to draw the image
-            g2.drawImage(image, 0, 0, 320,240, null);
+            g2.drawImage(image, 0, 0, 320, 240, null);
             g2.dispose();
         }
     }

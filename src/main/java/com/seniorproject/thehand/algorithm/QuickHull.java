@@ -5,55 +5,59 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+
 /**
  *
  * @author casanovatoy
  */
 public class QuickHull {
 
+    ArrayList<Point> data = new ArrayList<>();
     ArrayList<Point> convexHull = new ArrayList<>();
     int[][] in;
+
     public void quickHull() {
-//        convexHull = new ArrayList<>();
-//        if (convexHull.size() < 3) {
-//            return (ArrayList) convexHull.clone();
+        convexHull.clear();
+//        data = new ArrayList<>();
+//        if (data.size() < 3) {
+//            return (ArrayList) data.clone();
 //        }
-        // find extremals
         int minPoint = -1, maxPoint = -1;
         int minX = Integer.MAX_VALUE;
         int maxX = Integer.MIN_VALUE;
-        for (int i = 0; i < convexHull.size(); i++) {
-            if (convexHull.get(i).x < minX) {
-                minX = convexHull.get(i).x;
+
+        // Select point which leftmost and rightmost
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).x < minX) {
+                minX = data.get(i).x;
                 minPoint = i;
             }
-            if (convexHull.get(i).x > maxX) {
-                maxX = convexHull.get(i).x;
+            if (data.get(i).x > maxX) {
+                maxX = data.get(i).x;
                 maxPoint = i;
             }
         }
-        Point A = convexHull.get(minPoint);
-        Point B = convexHull.get(maxPoint);
-        convexHull.add(A);
-        convexHull.add(B);
-//        convexHull.remove(A);
-//        convexHull.remove(B);
 
+        Point pMinX = data.get(minPoint);
+        Point pMaxX = data.get(maxPoint);
+//        data.add(pMinX);
+        data.add(pMaxX);
+//        data.remove(pMinX);
+        data.remove(pMaxX);
         ArrayList<Point> leftSet = new ArrayList<>();
         ArrayList<Point> rightSet = new ArrayList<>();
 
-        for (int i = 0; i < convexHull.size(); i++) {
-            Point p = convexHull.get(i);
-            if (pointLocation(A, B, p) == -1) {
+        for (int i = 0; i < data.size(); i++) {
+            Point p = data.get(i);
+            if (pointLocation(pMinX, pMaxX, p) == -1) {
                 leftSet.add(p);
             } else {
                 rightSet.add(p);
             }
         }
-        hullSet(A, B, rightSet, convexHull);
-        hullSet(B, A, leftSet, convexHull);
+        hullSet(pMinX, pMaxX, rightSet, data);
+        hullSet(pMaxX, pMinX, leftSet, data);
 
-        
     }
 
     /*
@@ -69,16 +73,16 @@ public class QuickHull {
         return num;
     }
 
-    private void hullSet(Point A, Point B, ArrayList<Point> set, ArrayList<Point> hull) {
+    private ArrayList<Point> hullSet(Point A, Point B, ArrayList<Point> set, ArrayList<Point> hull) {
         int insertPosition = hull.indexOf(B);
-        if (set.size() == 0) {
-            return;
+        if (set.isEmpty()) {
+            return null;
         }
         if (set.size() == 1) {
             Point p = set.get(0);
             set.remove(p);
             hull.add(insertPosition, p);
-            return;
+            return null;
         }
         int dist = Integer.MIN_VALUE;
         int furthestPoint = -1;
@@ -111,57 +115,74 @@ public class QuickHull {
                 leftSetPB.add(M);
             }
         }
+
+        
+//        printPoint(hull);
         hullSet(A, P, leftSetAP, hull);
         hullSet(P, B, leftSetPB, hull);
-
+        convexHull.addAll(leftSetAP);
+        convexHull.addAll(leftSetPB);
+        return hull;
     }
 
     private int pointLocation(Point A, Point B, Point P) {
         int cp1 = (B.x - A.x) * (P.y - A.y) - (B.y - A.y) * (P.x - A.x);
         return (cp1 > 0) ? 1 : -1;
     }
-    
+
     public void setInput(int[][] input) {
         in = input;
-        convexHull.clear();
+        data.clear();
         for (int row = 0; row < in.length; row++) {
             for (int col = 0; col < in[1].length; col++) {
                 if (in[row][col] != -1) {
                     Point point = new Point(row, col);
 //                    System.out.println("(" + point.x + "," + point.y + ")");
-                    convexHull.add(point);
+                    data.add(point);
                 }
             }
         }
     }
 
-    
-    public BufferedImage getImage(){
-        BufferedImage image = new BufferedImage(in.length,in[1].length,BufferedImage.TYPE_INT_RGB);
+    public BufferedImage getImage() {
+        BufferedImage image = new BufferedImage(in.length, in[1].length, BufferedImage.TYPE_INT_RGB);
         Graphics g = image.getGraphics();
+        g.setColor(Color.GREEN);
         Polygon polygon = new Polygon();
-        
-        for( Point point : convexHull){
-//            System.out.println("(" + point.x + "," + point.y + ")");
+        for (Point point : data) {
             polygon.addPoint(point.x, point.y);
         }
+//        for (Point point : convexHull) {
+//            polygon.addPoint(point.x, point.y);
+//        }
+//        for (int i=0;i<100;i++) {
+//            polygon.addPoint(convexHull.get(i).x, convexHull.get(i).y);
+//        }
         g.drawPolygon(polygon);
         g.dispose();
         return image;
     }
 
-    
-    public void setImage(BufferedImage image){
+    public void setImage(BufferedImage image) {
         in = ImageUtil.changeImageToArray(image);
-        convexHull.clear();
+        data.clear();
+//        convexHull.clear();
+//        data = new ArrayList<>();
         for (int row = 0; row < in.length; row++) {
             for (int col = 0; col < in[1].length; col++) {
                 if (in[row][col] != -1) {
                     Point point = new Point(row, col);
-//                    System.out.println("(" + point.x + "," + point.y + ")");
-                    convexHull.add(point);
+                    data.add(point);
+//                    data.add(point);
                 }
             }
         }
+    }
+
+    private void printPoint(ArrayList<Point> list) {
+        for (Point p : list) {
+            System.out.println("(" + p.x + "," + p.y + ")");
+        }
+        System.out.println("");
     }
 }

@@ -48,17 +48,15 @@ public class EdgeRenderer extends JLabel {
         edgeDetector.setSourceImage(this.image);
         edgeDetector.process();
         try {
+            this.image = edgeDetector.getEdgesImage();
             convexHull.setImage(this.image);
-            convexHull.setInput(ImageUtil.changeImageToArray(edgeDetector.getEdgesImage()));
+//            convexHull.setInput(ImageUtil.changeImageToArray(edgeDetector.getEdgesImage()));
             convexHull.quickHull();
             this.image = convexHull.getImage();
         } catch (Exception e) {
+//            e.printStackTrace();
             this.image = edgeDetector.getEdgesImage();
         }
-
-//        fastConvexHull.setInput(ImageUtil.convertTo2DWithoutUsingGetRGB(edgeDetector.getEdgesImage()));
-//        fastConvexHull.execute();
-//        this.image = fastConvexHull.getImage();
     }
 
     public void setLowThreshold(int h, int s, int v) {
