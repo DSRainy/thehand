@@ -62,8 +62,8 @@ public class App extends javax.swing.JFrame {
                 t.scheduleAtFixedRate(updateFPS, 1000, 1000);
 
                 while (isVisible()) {
-//                    final BufferedImage bufferedImage = webcam.getImage();
-                    final BufferedImage bufferedImage = ImageIO.read(new File("E:\\001.jpg"));
+                    final BufferedImage bufferedImage = webcam.getImage();
+//                    final BufferedImage bufferedImage = ImageIO.read(new File("E:\\001.jpg"));
                     edgeRenderer1.setImage(bufferedImage);
                     edgeRenderer1.repaint();
                     webCamRenderer1.setImage(bufferedImage);

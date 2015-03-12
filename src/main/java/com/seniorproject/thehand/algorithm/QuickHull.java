@@ -5,6 +5,9 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  *
@@ -73,17 +76,19 @@ public class QuickHull {
         return num;
     }
 
-    private ArrayList<Point> hullSet(Point A, Point B, ArrayList<Point> set, ArrayList<Point> hull) {
+    private void hullSet(Point A, Point B, ArrayList<Point> set, ArrayList<Point> hull) {
         int insertPosition = hull.indexOf(B);
+        
         if (set.isEmpty()) {
-            return null;
+            return;
         }
         if (set.size() == 1) {
             Point p = set.get(0);
             set.remove(p);
             hull.add(insertPosition, p);
-            return null;
+            return;
         }
+        
         int dist = Integer.MIN_VALUE;
         int furthestPoint = -1;
         for (int i = 0; i < set.size(); i++) {
@@ -116,13 +121,11 @@ public class QuickHull {
             }
         }
 
-        
-//        printPoint(hull);
         hullSet(A, P, leftSetAP, hull);
         hullSet(P, B, leftSetPB, hull);
-        convexHull.addAll(leftSetAP);
-        convexHull.addAll(leftSetPB);
-        return hull;
+
+//        convexHull.addAll(leftSetAP);
+//        convexHull.addAll(leftSetPB);
     }
 
     private int pointLocation(Point A, Point B, Point P) {
@@ -147,7 +150,7 @@ public class QuickHull {
     public BufferedImage getImage() {
         BufferedImage image = new BufferedImage(in.length, in[1].length, BufferedImage.TYPE_INT_RGB);
         Graphics g = image.getGraphics();
-        g.setColor(Color.GREEN);
+//        g.setColor(Color.GREEN);
         Polygon polygon = new Polygon();
         for (Point point : data) {
             polygon.addPoint(point.x, point.y);
@@ -160,20 +163,19 @@ public class QuickHull {
 //        }
         g.drawPolygon(polygon);
         g.dispose();
-        return image;
+//        return image;
+        return findConvex(image);
     }
 
     public void setImage(BufferedImage image) {
         in = ImageUtil.changeImageToArray(image);
         data.clear();
-//        convexHull.clear();
-//        data = new ArrayList<>();
+        convexHull.clear();
         for (int row = 0; row < in.length; row++) {
             for (int col = 0; col < in[1].length; col++) {
                 if (in[row][col] != -1) {
                     Point point = new Point(row, col);
                     data.add(point);
-//                    data.add(point);
                 }
             }
         }
@@ -184,5 +186,35 @@ public class QuickHull {
             System.out.println("(" + p.x + "," + p.y + ")");
         }
         System.out.println("");
+    }
+
+    private BufferedImage findConvex(BufferedImage img) {
+        int[][] input = ImageUtil.changeImageToArray(img);
+        for (int row = 0; row < input.length; row++) {
+            for (int col = 0; col < input[1].length; col++) {
+                if (input[row][col] == -1) {
+                    input[row][col] = 2;
+                    break;
+                }
+            }
+            for (int col = input[1].length -1; col >= 0; col--) {
+                if (input[row][col] == -1) {
+                    input[row][col] = 2;
+                    break;
+                }
+            }
+        }
+        for (int row = 0; row < input.length; row++) {
+            for (int col = 0; col < input[1].length; col++) {
+                if (input[row][col] != 2) {
+                    input[row][col] = 0;
+                }
+                else{
+                    input[row][col] = -1;
+                }
+            }
+        }
+        
+        return ImageUtil.getImage(input);
     }
 }
