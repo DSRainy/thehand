@@ -564,6 +564,7 @@ public class App extends javax.swing.JFrame {
             }
         });
     }
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.seniorproject.thehand.main.EdgeRenderer edgeRenderer1;

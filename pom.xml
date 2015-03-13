@@ -38,5 +38,10 @@
             <artifactId>encog-core</artifactId>
             <version>3.3.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.bytedeco</groupId>
+            <artifactId>javacv</artifactId>
+            <version>0.8</version>
+        </dependency>
     </dependencies>
 </project>

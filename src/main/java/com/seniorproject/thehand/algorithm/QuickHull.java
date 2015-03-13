@@ -17,6 +17,7 @@ public class QuickHull {
 
     ArrayList<Point> data = new ArrayList<>();
     ArrayList<Point> convexHull = new ArrayList<>();
+    int[][] input;
     int[][] in;
 
     public void quickHull() {
@@ -78,7 +79,7 @@ public class QuickHull {
 
     private void hullSet(Point A, Point B, ArrayList<Point> set, ArrayList<Point> hull) {
         int insertPosition = hull.indexOf(B);
-        
+
         if (set.isEmpty()) {
             return;
         }
@@ -88,7 +89,7 @@ public class QuickHull {
             hull.add(insertPosition, p);
             return;
         }
-        
+
         int dist = Integer.MIN_VALUE;
         int furthestPoint = -1;
         for (int i = 0; i < set.size(); i++) {
@@ -189,7 +190,7 @@ public class QuickHull {
     }
 
     private BufferedImage findConvex(BufferedImage img) {
-        int[][] input = ImageUtil.changeImageToArray(img);
+        input = ImageUtil.changeImageToArray(img);
         for (int row = 0; row < input.length; row++) {
             for (int col = 0; col < input[1].length; col++) {
                 if (input[row][col] == -1) {
@@ -197,7 +198,7 @@ public class QuickHull {
                     break;
                 }
             }
-            for (int col = input[1].length -1; col >= 0; col--) {
+            for (int col = input[1].length - 1; col >= 0; col--) {
                 if (input[row][col] == -1) {
                     input[row][col] = 2;
                     break;
@@ -206,15 +207,17 @@ public class QuickHull {
         }
         for (int row = 0; row < input.length; row++) {
             for (int col = 0; col < input[1].length; col++) {
+
                 if (input[row][col] != 2) {
-                    input[row][col] = 0;
-                }
-                else{
                     input[row][col] = -1;
+                    input[row][col] = in[row][col];
+                    
+                } else {
+                    input[row][col] = 0xFFFF0000;
                 }
+                
             }
         }
-        
         return ImageUtil.getImage(input);
     }
 }
